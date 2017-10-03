@@ -1,0 +1,3 @@
+[submodule "First-Android-App"]
+	path = First-Android-App
+	url = https://github.com/padlaboris/First-Android-App.git
