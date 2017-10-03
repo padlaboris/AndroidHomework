@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void someMethod(){
-        System.out.println("Conflict!!!");
-        System.out.println("Hello World!");
+        System.out.println("Hello world");
     }
 }
