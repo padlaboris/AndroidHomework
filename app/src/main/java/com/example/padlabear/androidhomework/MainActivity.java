@@ -19,4 +19,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Hello world");
         Log.d(LOG, "some method is called");
     }
+
+    public void someMethodForStash(){
+        System.out.println("Stash me plz");
+    }
 }
