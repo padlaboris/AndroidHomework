@@ -32,7 +32,7 @@ public class DefaultCalculator implements Calculator {
         return parseExpression(value);
     }
 
-
+//TODO check if input values are letters or other symbols
     private String parseExpression(String exp) {
         final String result;
         final List<String> numbers;
