@@ -1,4 +1,4 @@
-package com.example.httpjson;
+package com.example.parsejson;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
