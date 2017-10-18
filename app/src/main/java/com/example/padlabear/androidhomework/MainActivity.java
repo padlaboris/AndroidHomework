@@ -1,5 +1,7 @@
 package com.example.padlabear.androidhomework;
 
+import android.content.Context;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
