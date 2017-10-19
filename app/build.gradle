@@ -11,14 +11,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-
     buildTypes {
-        debug {
-            buildConfigField "String", "BASE_CALC_URL", "\"https://debugcalculator.appspot.com\""
-        }
         release {
-            buildConfigField "String", "BASE_CALC_URL", "\"https://releasecalculator.appspot.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

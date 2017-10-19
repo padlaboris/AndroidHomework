@@ -1,4 +1,4 @@
-package com.example.padlabear.hw;
+package com.example.padlabear.androidhomework;
 
 
 import android.content.Intent;
