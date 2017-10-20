@@ -71,19 +71,16 @@ public class UserEndpoint {
      * Inserts a new {@code User}.
      */
     @ApiMethod(
-            name = "insert",
-            path = "user",
-            httpMethod = ApiMethod.HttpMethod.POST)
-    public User insert(User user) {
+            name = "insert")
+    public void insert(@Named("id") Long id, @Named("name") String name, @Named("avatar") String avatar) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that user.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
+        User user = new User(Long.valueOf(id), name, avatar);
         ofy().save().entity(user).now();
-        logger.info("Created User with ID: " + user.getId());
-
-        return ofy().load().entity(user).now();
+        logger.info("Created User.");
     }
 
     /**
