@@ -10,3 +10,8 @@
 /.idea/
 /build/
 /.gradle/
+app/libs/
+app/src/main/res/drawable/
+backend/build/
+backend/src/main/webapp/css/
+backend/src/main/webapp/js/
