@@ -58,7 +58,7 @@ public class UserEndpoint {
             name = "get",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public User get(@Named("id") Long id) throws NotFoundException {
+    public User get(@Named("id") String id) throws NotFoundException {
         logger.info("Getting User with ID: " + id);
         User user = ofy().load().type(User.class).id(id).now();
         if (user == null) {
@@ -72,13 +72,13 @@ public class UserEndpoint {
      */
     @ApiMethod(
             name = "insert")
-    public void insert(@Named("id") Long id, @Named("name") String name, @Named("avatar") String avatar) {
+    public void insert(@Named("id") String id, @Named("FirstName") String FirstName, @Named("LastName") String LastName, @Named("Age") String Age, @Named("Location") String Location) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that user.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
-        User user = new User(Long.valueOf(id), name, avatar);
+        User user = new User (id, FirstName, LastName, Age, Location);
         ofy().save().entity(user).now();
         logger.info("Created User.");
     }
@@ -96,7 +96,7 @@ public class UserEndpoint {
             name = "update",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public User update(@Named("id") Long id, User user) throws NotFoundException {
+    public User update(@Named("id") String id, User user) throws NotFoundException {
         // TODO: You should validate your ID parameter against your resource's ID here.
         checkExists(id);
         ofy().save().entity(user).now();
@@ -115,7 +115,7 @@ public class UserEndpoint {
             name = "remove",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") Long id) throws NotFoundException {
+    public void remove(@Named("id") String id) throws NotFoundException {
         checkExists(id);
         ofy().delete().type(User.class).id(id).now();
         logger.info("Deleted User with ID: " + id);
@@ -146,7 +146,7 @@ public class UserEndpoint {
         return CollectionResponse.<User>builder().setItems(userList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(Long id) throws NotFoundException {
+    private void checkExists(String id) throws NotFoundException {
         try {
             ofy().load().type(User.class).id(id).safe();
         } catch (com.googlecode.objectify.NotFoundException e) {

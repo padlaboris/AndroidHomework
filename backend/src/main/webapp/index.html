@@ -57,10 +57,14 @@
                     <div class="input-group">
                         <input type="text" class="form-control input-lg" placeholder="id"
                                id="idInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="Name"
-                               id="nameInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="Avatar"
-                               id="avatarInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="FirstName"
+                               id="FirstNameInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="LastName"
+                               id="LastNameInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="Age"
+                               id="AgeInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="Location"
+                               id="LocationInput"/>
                         <span class="input-group-btn">
                              <button class="btn btn-default btn-primary btn-group btn-lg"
                                      type="submit" id="helloButton">Say "Hello" &raquo;</button>
@@ -94,10 +98,12 @@
     function enableClick() {
       document.getElementById('helloButton').onclick = function() {
         var id = document.getElementById('idInput').value;
-        var name = document.getElementById('nameInput').value;
-        var avatar = document.getElementById('avatarInput').value;
+        var FirstName = document.getElementById('FirstNameInput').value;
+        var LastName = document.getElementById('LastNameInput').value;
+        var Age = document.getElementById('AgeInput').value;
+        var Location = document.getElementById('LocationInput').value;
 
-        gapi.client.myApi.sayHi({'id': id, 'name': name, 'avatar': avatar}).execute(
+        gapi.client.myApi.sayHi({'id': id, 'FirstName': FirstName, 'LastName': LastName, 'Age': Age, 'Location': Location}).execute(
           function(response) {
             var outputAlertDiv = document.getElementById('outputAlert');
             outputAlertDiv.style.visibility = 'visible';

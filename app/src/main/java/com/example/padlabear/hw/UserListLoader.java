@@ -30,18 +30,12 @@ public class UserListLoader extends AsyncTask<Context, Void, String> {
 
         httpClient.request(Api.USER_URL, new DefaultHttpClient.ResponseListener() {
             @Override
-            public void onResponse(InputStream pInputStream) {
+            public void onResponse(InputStream InputStream) {
                 try {
-                    userListWithObject = usersListParserFactory.createParserForResponceWithObject(pInputStream).parse();
+                    userListWithObject = usersListParserFactory.createParserForResponceWithObject(InputStream).parse();
                 } catch (final Exception e) {
-                    onError(e);
+                    e.printStackTrace();
                 }
-
-            }
-
-            @Override
-            public void onError(final Throwable pThrowable) {
-
             }
         });
 
@@ -51,13 +45,13 @@ public class UserListLoader extends AsyncTask<Context, Void, String> {
             return NO_DATA;
         }
 
-        List<GsonUser> usersList = userListWithObject.getUsersList();
+        List<GsonUser> usersList = userListWithObject.getUserList();
 
         if (usersList == null || usersList.isEmpty()) {
             return NO_DATA;
         }
 
-        return usersList.get(usersList.size() -1).getName();
+        return usersList.get(usersList.size() -1).getFirstName();
     }
 
     @Override
