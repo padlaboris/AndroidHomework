@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
 
-
 import com.example.padlabear.myapplication.backend.userApi.UserApi;
 import com.example.padlabear.myapplication.backend.userApi.model.User;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -23,21 +22,16 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
 
     @Override
     protected String doInBackground(Pair<Context, String>... params) {
-        if(myApiService == null) {  // Only do this once
+        if (myApiService == null) {
             UserApi.Builder builder = new UserApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    // options for running against local devappserver
-                    // - 10.0.2.2 is localhost's IP address in Android emulator
-                    // - turn off compression when running against local devappserver
-                    .setRootUrl("https://simplebackend-183515.appspot.com/_ah/api/")
+                    .setRootUrl("https://exampleofbackend.appspot.com/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            // end options for devappserver
-
             myApiService = builder.build();
         }
 
