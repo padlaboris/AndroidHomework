@@ -49,7 +49,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
             if (users == null || users.isEmpty()) {
                 return NO_DATA;
             }
-            return users.get(users.size() - 1).getName();
+            return users.get(users.size() - 1).getFirstName();
         } catch (IOException e) {
             return e.getMessage();
         }

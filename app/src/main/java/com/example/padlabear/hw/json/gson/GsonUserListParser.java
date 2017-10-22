@@ -8,6 +8,7 @@ public class GsonUserListParser implements Parser<GsonUserList> {
 
     private final String source;
 
+
     public GsonUserListParser(final String source) {
         this.source = source;
     }

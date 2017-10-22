@@ -5,57 +5,52 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-
 import com.example.padlabear.hw.http.DefaultHttpClient;
 import com.example.padlabear.hw.http.HttpClient;
-import com.example.padlabear.hw.json.UserList;
-import com.example.padlabear.hw.json.gson.GsonUser;
+import com.example.padlabear.hw.json.gson.GsonUserList;
+import com.example.padlabear.hw.util.IOUtils;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class UserListLoader extends AsyncTask<Context, Void, String> {
 
     public static final String NO_DATA = "No data";
-    private UserList userListWithObject;
+    private GsonUserList users;
     private Context context;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(final Context... params) {
 
-        final UsersListParserFactory usersListParserFactory = new UsersListParserFactory();
-        HttpClient httpClient = new DefaultHttpClient();
+        final UserParserFactory factory = new UserParserFactory();
+        final HttpClient httpClient = new DefaultHttpClient();
 
-        userListWithObject = null;
 
         httpClient.request(Api.USER_URL, new DefaultHttpClient.ResponseListener() {
             @Override
-            public void onResponse(InputStream InputStream) {
+            public void onResponse(final InputStream inputStream) {
                 try {
-                    userListWithObject = usersListParserFactory.createParserForResponceWithObject(InputStream).parse();
+                    users = factory.createUsersParser(IOUtils.toString(inputStream)).parse();
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(final Throwable pThrowable) {
+
             }
         });
 
         context = params[0];
 
-        if (userListWithObject == null) {
-            return NO_DATA;
+        if (users != null && !users.getUsers().isEmpty()) {
+            return users.getUsers().iterator().next().getFirstName();
         }
-
-        List<GsonUser> usersList = userListWithObject.getUserList();
-
-        if (usersList == null || usersList.isEmpty()) {
-            return NO_DATA;
-        }
-
-        return usersList.get(usersList.size() -1).getFirstName();
+        return NO_DATA;
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(final String s) {
         Toast.makeText(context, s, Toast.LENGTH_LONG).show();
     }
 
