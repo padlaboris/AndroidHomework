@@ -2,6 +2,7 @@ package com.example.padlabear.myapplication.backend;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 
 
 @Entity
@@ -9,51 +10,49 @@ public class User {
 
     @Id
     private String id;
-    private String FirstName;
-    private String LastName;
-    private String Age;
-    private String Location;
+    private String firstName;
+    private String lastName;
+    private String age;
+    private String location;
+    @Ignore
+    private String registered;
 
-    public User(String id, String FirstName, String LastName, String Age, String Location) {
+
+    public User(final String id,
+                final String firstName,
+                final String lastName,
+                final String age,
+                final String location,
+                final String registered) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.location = location;
+        this.registered = registered;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
-        return FirstName;
-    }
-
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
+        return firstName;
     }
 
     public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
+        return lastName;
     }
 
     public String getAge() {
-        return Age;
-    }
-
-    public void setAge(String age) {
-        Age = age;
+        return age;
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
-    public void setLocation(String location) {
-        Location = location;
+    public String getRegistered() {
+        return registered;
     }
 }

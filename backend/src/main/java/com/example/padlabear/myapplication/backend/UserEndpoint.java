@@ -10,7 +10,9 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -42,8 +44,9 @@ public class UserEndpoint {
 
     private static final int DEFAULT_LIST_LIMIT = 20;
 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
     static {
-        // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(User.class);
     }
 
@@ -58,7 +61,7 @@ public class UserEndpoint {
             name = "get",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public User get(@Named("id") String id) throws NotFoundException {
+    public User get(@Named("id") final String id) throws NotFoundException {
         logger.info("Getting User with ID: " + id);
         User user = ofy().load().type(User.class).id(id).now();
         if (user == null) {
@@ -70,15 +73,14 @@ public class UserEndpoint {
     /**
      * Inserts a new {@code User}.
      */
-    @ApiMethod(
-            name = "insert")
-    public void insert(@Named("id") String id, @Named("FirstName") String FirstName, @Named("LastName") String LastName, @Named("Age") String Age, @Named("Location") String Location) {
-        // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that user.id has not been set. If the ID type is not supported by the
-        // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
-        //
-        // If your client provides the ID then you should probably use PUT instead.
-        User user = new User (id, FirstName, LastName, Age, Location);
+    @ApiMethod(name = "insert")
+    public void insert(@Named("id") final String id,
+                       @Named("firstName") final String firstName,
+                       @Named("lastName") final String lastName,
+                       @Named("age") final String age,
+                       @Named("location") final String location) {
+        final String registered = dateFormat.format(new Date());
+        final User user = new User(id, firstName, lastName, age, location, registered);
         ofy().save().entity(user).now();
         logger.info("Created User.");
     }
@@ -96,8 +98,7 @@ public class UserEndpoint {
             name = "update",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public User update(@Named("id") String id, User user) throws NotFoundException {
-        // TODO: You should validate your ID parameter against your resource's ID here.
+    public User update(@Named("id") final String id, final User user) throws NotFoundException {
         checkExists(id);
         ofy().save().entity(user).now();
         logger.info("Updated User: " + user);
@@ -115,7 +116,7 @@ public class UserEndpoint {
             name = "remove",
             path = "user/{id}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") String id) throws NotFoundException {
+    public void remove(@Named("id") final String id) throws NotFoundException {
         checkExists(id);
         ofy().delete().type(User.class).id(id).now();
         logger.info("Deleted User with ID: " + id);
@@ -132,21 +133,23 @@ public class UserEndpoint {
             name = "list",
             path = "user",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<User> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<User> list(@Nullable @Named("cursor") final String cursor,
+                                         @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<User> query = ofy().load().type(User.class).limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
-        QueryResultIterator<User> queryIterator = query.iterator();
-        List<User> userList = new ArrayList<User>(limit);
+        final QueryResultIterator<User> queryIterator = query.iterator();
+        final List<User> userList = new ArrayList<>(limit);
         while (queryIterator.hasNext()) {
             userList.add(queryIterator.next());
         }
-        return CollectionResponse.<User>builder().setItems(userList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+        return CollectionResponse.<User>builder().setItems(userList)
+                .setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(String id) throws NotFoundException {
+    private void checkExists(final String id) throws NotFoundException {
         try {
             ofy().load().type(User.class).id(id).safe();
         } catch (com.googlecode.objectify.NotFoundException e) {

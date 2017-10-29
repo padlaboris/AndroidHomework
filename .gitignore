@@ -15,3 +15,4 @@ app/src/main/res/drawable/
 backend/build/
 backend/src/main/webapp/css/
 backend/src/main/webapp/js/
+!/backend/src/main/java/com/example/padlabear/myapplication/backend/User.java

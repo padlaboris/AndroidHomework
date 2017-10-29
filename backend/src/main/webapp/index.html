@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello, Endpoints!</title>
+    <title>User Endpoints!</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
@@ -12,7 +12,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Hello, Endpoints!</a>
+            <a class="navbar-brand" href="#">User Endpoints!</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -43,31 +43,28 @@
     -->
     <div class="alert alert-success" style="visibility: collapse;" id="outputAlert"></div>
 
-    <!--
-      A form that takes a text value and submits it to the Endpoint,
-      access to the Endpoint is enabled once the client is loaded below.
-    -->
+
     <div class="jumbotron">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Hello, Endpoints!</h1>
+                <h1>User Endpoints!</h1>
                 <p>Enter your name and press the button below to call your Google Cloud Endpoints
                     API.</p>
                 <form>
                     <div class="input-group">
                         <input type="text" class="form-control input-lg" placeholder="id"
                                id="idInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="FirstName"
-                               id="FirstNameInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="LastName"
-                               id="LastNameInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="Age"
-                               id="AgeInput"/>
-                        <input type="text" class="form-control input-lg" placeholder="Location"
-                               id="LocationInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="firstName"
+                               id="firstNameInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="lastName"
+                               id="lastNameInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="age"
+                               id="ageInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="location"
+                               id="locationInput"/>
                         <span class="input-group-btn">
                              <button class="btn btn-default btn-primary btn-group btn-lg"
-                                     type="submit" id="helloButton">Say "Hello" &raquo;</button>
+                                     type="submit" id="enter">Enter &raquo;</button>
                           </span>
                     </div>
                 </form>
@@ -94,16 +91,15 @@
 </div>
 
 <script type="text/javascript">
-    // A function that attaches a "Say Hello" button click handler
     function enableClick() {
-      document.getElementById('helloButton').onclick = function() {
+      document.getElementById('enter').onclick = function() {
         var id = document.getElementById('idInput').value;
-        var FirstName = document.getElementById('FirstNameInput').value;
-        var LastName = document.getElementById('LastNameInput').value;
-        var Age = document.getElementById('AgeInput').value;
-        var Location = document.getElementById('LocationInput').value;
+        var firstName = document.getElementById('firstNameInput').value;
+        var lastName = document.getElementById('lastNameInput').value;
+        var age = document.getElementById('ageInput').value;
+        var location = document.getElementById('locationInput').value;
 
-        gapi.client.myApi.sayHi({'id': id, 'FirstName': FirstName, 'LastName': LastName, 'Age': Age, 'Location': Location}).execute(
+        gapi.client.userApi.insert({'id': id, 'firstName': firstName, 'lastName': lastName, 'age': lge, 'location': location}).execute(
           function(response) {
             var outputAlertDiv = document.getElementById('outputAlert');
             outputAlertDiv.style.visibility = 'visible';
@@ -137,6 +133,7 @@
       }
       gapi.client.load(apiName, apiVersion, callback, apiRoot);
     }
+
 
 
 </script>
